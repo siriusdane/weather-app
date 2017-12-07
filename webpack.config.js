@@ -1,4 +1,5 @@
 const path = require('path');
+const extractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: './src/app.jsx',
@@ -17,11 +18,14 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/,
-                use: [ 'style-loader', 'css-loader' ]
+                test: /\.scss$/,
+                loaders: ['style-loader', 'css-loader', 'sass-loader']
             }
         ]
     },
+    plugins: [
+        new extractTextPlugin('dist/bundle.css', { allChunks: true }),
+    ],
     devServer: {
         contentBase: path.resolve(__dirname, 'dist')
     }
