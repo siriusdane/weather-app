@@ -12,3 +12,4 @@ Usage
 ```
 npm run start
 ```
+And then access it at `localhost:8080`
