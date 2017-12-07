@@ -1,7 +1,7 @@
 $font-base: 14px;
 $font-big: 22px;
 
-$color-main: #4191A4;
+$color-main: #48afb8;
 $color-font: #223322;
 $color-bg: #EEEEEE;
 $color-error: #E53935;
@@ -45,6 +45,10 @@ body {
         flex: 1 1 auto;
         margin-right: spacer(2);
         text-align: right;
+
+        span {
+            margin-right: spacer(1);
+        }
     }
 }
 
@@ -55,11 +59,13 @@ body {
     justify-content: center;
     align-items: center;
     border: 1px solid $color-main;
+    color: $color-bg;
     width: 250px;
     padding: spacer(1);
     margin: spacer(1);
     cursor: pointer;
     box-shadow: 3px 3px 5px 6px #ccc;
+    background-color: $color-main;
 
     .weather-info {
         display: flex;
@@ -109,7 +115,8 @@ body {
     }
 
     .weather-min-container {
-        background-color: #FFFFFF;
+        background-color: $color-bg;
+        color: $color-main;
     }
 }
 
@@ -139,6 +146,7 @@ body {
     .city-map {
         height: 300px;
         width: 300px;
+        border: 1px solid $color-main;
     }
 
     .city-weather {
@@ -160,6 +168,11 @@ body {
             font-size: $font-base;
             width: 200px;
             padding: spacer(2);
+            text-align: center;
+
+            .date {
+                font-size: $font-big
+            }
 
             .info {
                 span {

@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { TEMP_CELCIUS, TEMP_FAHRENHEIT, TEMP_KELVIN } from '../constants/weather';
 import { weatherChangeUnit, weatherClearCity } from '../actions/weather';
+import { displayDate } from '../utils/units';
 
 class Navbar extends React.Component {
     static propTypes = {
@@ -42,6 +43,7 @@ class Navbar extends React.Component {
     renderDropdown() {
         return (
             <div className='navbar-selector'>
+                <span>{ displayDate(new Date()) }</span>
                 <DropdownButton id='1' title={ this.getButtonCopy() }>
                     <MenuItem
                         eventKey={ TEMP_CELCIUS }

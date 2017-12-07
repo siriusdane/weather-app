@@ -21,3 +21,24 @@ export function isSameDate(date1, date2) {
         date1.getMonth() === date2.getMonth() &&
         date1.getDate() === date2.getDate();
 }
+
+export function displayDate(date) {
+    return `${getWeekDay(date)}, ${getMonth(date)} ${getDay(date)}`;
+}
+
+function getMonth(date) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    return months[date.getMonth()];
+}
+
+function getDay(date) {
+    return date.getDate();
+}
+
+function getWeekDay(date) {
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    return days[date.getDay()];
+}

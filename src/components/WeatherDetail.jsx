@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Map from './Map.jsx';
 import { weatherGetForecast } from '../actions/weather';
-import { getUnitDisplay, isSameDate } from '../utils/units';
+import { getUnitDisplay, isSameDate, displayDate } from '../utils/units';
 import { GOOGLE_MAPS_URL, GOOGLE_MAPS_API_KEY } from '../constants/google';
 
 class WeatherDetail extends React.Component {
@@ -123,12 +123,13 @@ class WeatherDetail extends React.Component {
 
     getWeatherDate(city) {
         const date = new Date(city.dt * 1000);
-        return date.toDateString();
+        return displayDate(date);
     }
 
     getProperWeathers() {
         const weathers = [];
-        let selectedDate = null;
+        let selectedDate = new Date();
+        selectedDate.setHours(0, 0, 0, 0);
 
         this.props.city.forecast.list.forEach(weather => {
             const date = new Date(weather.dt * 1000);
