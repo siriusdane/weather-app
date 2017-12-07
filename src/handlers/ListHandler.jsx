@@ -3,17 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import Navbar from '../components/Navbar.jsx';
-import WeatherDetail from '../components/WeatherDetail.jsx';
 import WeatherList from '../components/WeatherList.jsx';
 import { weatherGetMultiple } from '../actions/weather';
 import { CITIES } from '../constants/weather';
 
-class AppHandler extends React.Component {
+class ListHandler extends React.Component {
     static propTypes = {
         weathers: PropTypes.object.isRequired,
         unit: PropTypes.string.isRequired,
         custom: PropTypes.object,
-        selectedCity: PropTypes.object,
         dispatch: PropTypes.func.isRequired
     };
 
@@ -30,23 +28,23 @@ class AppHandler extends React.Component {
     }
 
     render() {
-        return this.state.loading ? 
-            this.renderLoading() : 
-            this.state.errors ? 
-                this.renderErrors() :
-                this.renderElement();
+        return (
+            <div className='weather-app'>
+                <Navbar { ...this.props } blockRedirect={ true } />
+                { this.renderBody() }
+            </div>
+        );
+    }
+
+    renderBody() {
+        if (this.state.loading) { return this.renderLoading(); }
+        else if (this.state.errors) { return this.renderErrors(); }
+        else { return this.renderElement(); }
     }
 
     renderElement() {
         return (
-            <div className='weather-app'>
-                <Navbar { ...this.props } />
-                {
-                    this.props.selectedCity ?
-                        <WeatherDetail { ...this.props } /> :
-                        <WeatherList { ...this.props } />
-                }
-            </div>
+            <WeatherList { ...this.props } />
         );
     }
 
@@ -71,18 +69,12 @@ class AppHandler extends React.Component {
         );
     }
 
-    loadingDone = () => {
-        this.setState({ loading: false, errors: false });
-    }
-
-    loadingFailed = () => {
-        this.setState({ loading: false, errors: true });
-    }
-
     getDefaultWeathers = () => {
+        this.setState({ loading: true, errors: false });
         this.props.dispatch(weatherGetMultiple(CITIES))
-            .then(this.loadingDone)
-            .catch(this.loadingFailed);
+            .then(error => {
+                this.setState({ loading: false, errors: Boolean(error) });        
+            })
     }
 }
 
@@ -91,8 +83,8 @@ function mapStateToProps(state) {
         weathers: state.weather.weathers,
         custom: state.weather.custom,
         unit: state.weather.unit,
-        selectedCity: state.weather.selectedCity
     };
 }
 
-export default connect(mapStateToProps)(AppHandler);
+export default connect(mapStateToProps)(ListHandler);
+

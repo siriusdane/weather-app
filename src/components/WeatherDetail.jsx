@@ -8,7 +8,7 @@ import { GOOGLE_MAPS_URL, GOOGLE_MAPS_API_KEY } from '../constants/google';
 
 class WeatherDetail extends React.Component {
     static propTypes = {
-        selectedCity: PropTypes.object.isRequired,
+        city: PropTypes.object.isRequired,
         unit: PropTypes.string.isRequired,
         dispatch: PropTypes.func.isRequired
     }
@@ -42,13 +42,13 @@ class WeatherDetail extends React.Component {
     renderName() {
         return (
             <div className='city-name'>
-                <h1>{ this.props.selectedCity.name }</h1>
+                <h1>{ this.props.city.name }</h1>
             </div>
         );
     }
 
     renderMap() {
-        const { lat, lon } = this.props.selectedCity.coord;
+        const { lat, lon } = this.props.city.coord;
 
         return (
             <div className='city-map'>
@@ -70,7 +70,7 @@ class WeatherDetail extends React.Component {
                 <h2>Current Weather</h2>
                 <div className='city-weather'>
                     <span className='temp'>{ this.getTempCopy() }</span>
-                    <span className='weather'>{ this.getWeatherCopy(this.props.selectedCity) }</span>
+                    <span className='weather'>{ this.getWeatherCopy(this.props.city) }</span>
                 </div>
             </div>
         );
@@ -103,7 +103,7 @@ class WeatherDetail extends React.Component {
     // HANDLERS
     getCityForecast = () => {
         this.setState({ loading: true });
-        this.props.dispatch(weatherGetForecast(this.props.selectedCity.id))
+        this.props.dispatch(weatherGetForecast(this.props.city.id))
             .then(error => {
                 this.setState({
                     loading: false,
@@ -114,8 +114,7 @@ class WeatherDetail extends React.Component {
 
     // SELECTORS
     getTempCopy() {
-        console.log(this.props.selectedCity.main.temp, this.props.unit);
-        return getUnitDisplay(this.props.selectedCity.main.temp, this.props.unit);
+        return getUnitDisplay(this.props.city.main.temp, this.props.unit);
     }
 
     getWeatherCopy(city) {
@@ -131,7 +130,7 @@ class WeatherDetail extends React.Component {
         const weathers = [];
         let selectedDate = null;
 
-        this.props.selectedCity.forecast.list.forEach(weather => {
+        this.props.city.forecast.list.forEach(weather => {
             const date = new Date(weather.dt * 1000);
             date.setHours(0, 0, 0, 0);
 

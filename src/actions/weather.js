@@ -32,7 +32,28 @@ export function weatherGetCity(name, custom = true) {
 
                 return null;
             })
-            .catch(error => { console.log(error) });
+            .catch(error => { return error; });
+    };
+}
+
+export function weatherGetCityInfo(id) {
+    return dispatch => {
+        const params = {
+            id,
+            APPID: WEATHER_API_KEY
+        };
+
+        return fetch(`${WEATHER_BASE_API}/weather?${getQueryParams(params)}`)
+            .then(response => response.json())
+            .then(json => {
+                if (json.cod && json.message) {
+                    return json;
+                }
+
+                dispatch(selectCity(json));
+                return null;
+            })
+            .catch(error => { return error; });
     };
 }
 
@@ -53,7 +74,7 @@ export function weatherGetForecast(id) {
                 dispatch(addWeatherForecast(json));
                 return null;
             })
-            .catch(error => { console.log(error); });
+            .catch(error => { return error; });
     };
 }
 
@@ -64,7 +85,7 @@ export function weatherGetMultiple(cities) {
         });
 
         return Promise.all(promises)
-            .then(() => true);
+            .then((errors) => _.some(errors));
     }
 }
 
@@ -114,8 +135,8 @@ function clearCustomWeather() {
     return { type: CLEAR_CUSTOM };
 }
 
-function selectCity(cityId) {
-    return { type: SELECT_CITY, cityId };
+function selectCity(city) {
+    return { type: SELECT_CITY, city };
 }
 
 function clearCity() {

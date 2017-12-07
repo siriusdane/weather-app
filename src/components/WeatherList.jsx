@@ -47,7 +47,7 @@ class WeatherList extends React.Component {
                             key={ _.uniqueId('weather-min-') }
                             weather={ weather }
                             unit={ this.props.unit }
-                            onClick={ this.onSelectCity }
+                            route={ this.getRoute(weather.id) }
                         />
                     ))
                 }
@@ -61,7 +61,7 @@ class WeatherList extends React.Component {
                 <WeatherMin
                     weather={ this.props.custom }
                     unit={ this.props.unit }
-                    onClick={ this.onSelectCity }
+                    route={ this.getRoute(this.props.custom.id) }
                 />
                 <Button bsStyle='link' onClick={ this.onNewSearch }>
                     Perform another search
@@ -100,6 +100,10 @@ class WeatherList extends React.Component {
     // SELECTORS
     getCustomValidationState() {
         return this.state.queryError ? 'error' : null;
+    }
+
+    getRoute(cityId) {
+        return `/details/${cityId}`;
     }
 
     // HANDLERS

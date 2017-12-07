@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { TEMP_CELCIUS, TEMP_FAHRENHEIT, TEMP_KELVIN } from '../constants/weather';
 import { weatherChangeUnit, weatherClearCity } from '../actions/weather';
@@ -7,10 +8,21 @@ import { weatherChangeUnit, weatherClearCity } from '../actions/weather';
 class Navbar extends React.Component {
     static propTypes = {
         unit: PropTypes.string.isRequired,
+        blockRedirect: PropTypes.bool,
         dispatch: PropTypes.func.isRequired
     }
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            redirect: false
+        };
+    }
+
     render() {
+        if (this.state.redirect && !this.props.blockRedirect) {
+            return <Redirect to='/' />
+        }
         return (
             <div className='navbar'>
                 { this.renderTitle() }
@@ -67,7 +79,7 @@ class Navbar extends React.Component {
     }
 
     onTitleClick = () => {
-        this.props.dispatch(weatherClearCity());
+        this.setState({ redirect: true });
     }
 }
 

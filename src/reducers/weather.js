@@ -49,15 +49,9 @@ function storeHandler(state = initialState, action) {
                 unit: action.unit
             };
         case SELECT_CITY:
-            let selectedCity = _.get(state.weathers, action.cityId);
-
-            if (!selectedCity && state.custom.id === action.cityId) {
-                selectedCity = state.custom;
-            }
-
             return {
                 ...state,
-                selectedCity
+                selectedCity: action.city
             };
         case CLEAR_CITY:
             return {
