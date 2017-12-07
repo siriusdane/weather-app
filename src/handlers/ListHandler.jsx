@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
 import Navbar from '../components/Navbar.jsx';
 import WeatherList from '../components/WeatherList.jsx';
 import { weatherGetMultiple } from '../actions/weather';
@@ -63,9 +62,9 @@ class ListHandler extends React.Component {
                 <div className='error-container'>
                     <i className='fa fa-exclamation-circle' />
                     <span>There was an error loading the weather information</span>
-                    <Button bsStyle='link' bsSize='large' onClick={ this.getDefaultWeathers }>
+                    <button className='btn btn-big' onClick={ this.getDefaultWeathers }>
                         Try Again
-                    </Button>
+                    </button>
                 </div>
             </div>
         );

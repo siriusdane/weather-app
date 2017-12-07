@@ -44,6 +44,10 @@ class Navbar extends React.Component {
         return (
             <div className='navbar-selector'>
                 <span>{ displayDate(new Date()) }</span>
+                <button className='btn btn-dropdown' onClick={ this.onClickDropdown }>
+                    { this.getButtonCopy() }
+                </button>
+                <div className
                 <DropdownButton id='1' title={ this.getButtonCopy() }>
                     <MenuItem
                         eventKey={ TEMP_CELCIUS }
