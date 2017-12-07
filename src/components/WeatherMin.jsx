@@ -67,7 +67,7 @@ class WeatherMin extends React.Component {
                 key={ key }
                 className='weather-icon'
                 src={ `${WEATHER_BASE_ICON}/${weather.icon}.png` }
-                alt={ `${weather.main}` }
+                title={ `${weather.main}` }
             />
         );
     }
