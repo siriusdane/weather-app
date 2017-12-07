@@ -4,6 +4,7 @@ $font-big: 22px;
 $color-main: #4191A4;
 $color-font: #223322;
 $color-bg: #EEEEEE;
+$color-error: #E53935;
 
 @function spacer($amount) {
     @return ($amount*12px);
@@ -166,5 +167,26 @@ body {
                 }
             }
         }
+    }
+}
+
+.loading-main-error, .loading-main-page, .error-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-big;
+    height: 100vh;
+
+    .error-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .fa {
+        font-size: 40px;
+        color: $color-error;
+        margin: spacer(1);
     }
 }

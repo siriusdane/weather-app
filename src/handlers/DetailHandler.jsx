@@ -62,11 +62,13 @@ class DetailHandler extends React.Component {
     renderErrors() {
         return (
             <div className='loading-main-error'>
-                <i className='fa fa-exclamation-circle' />
-                <span>There was an error loading the weather information</span>
-                <Button bsStyle='link' onClick={ this.getCityInformation }>
-                    Try Again
-                </Button>
+                <div className='error-container'>
+                    <i className='fa fa-exclamation-circle' />
+                    <span>There was an error loading the weather information</span>
+                    <Button bsStyle='link' bsSize='large' onClick={ this.getCityInformation }>
+                        Try Again
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -79,7 +81,10 @@ class DetailHandler extends React.Component {
         this.props.dispatch(weatherGetCityInfo(params.id))
             .then(error => {
                 this.setState({ loading: false, errors: Boolean(error) });
-            });
+            })
+            .catch(error => {
+                this.setState({ loading: false, errors: true });
+            })
     }
 }
 

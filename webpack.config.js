@@ -1,11 +1,12 @@
 const path = require('path');
 const extractTextPlugin = require('extract-text-webpack-plugin');
+const publicPath = path.resolve(__dirname, 'dist');
 
 module.exports = {
     entry: './src/app.jsx',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: publicPath,
     },
     module: {
         loaders: [
@@ -27,6 +28,7 @@ module.exports = {
         new extractTextPlugin('dist/bundle.css', { allChunks: true }),
     ],
     devServer: {
-        contentBase: path.resolve(__dirname, 'dist')
+        contentBase: publicPath,
+        historyApiFallback: true
     }
 };

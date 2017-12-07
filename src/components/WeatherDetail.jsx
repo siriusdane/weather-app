@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Map from './Map.jsx';
 import { weatherGetForecast } from '../actions/weather';
-import { getUnitDisplay } from '../utils/units';
+import { getUnitDisplay, isSameDate } from '../utils/units';
 import { GOOGLE_MAPS_URL, GOOGLE_MAPS_API_KEY } from '../constants/google';
 
 class WeatherDetail extends React.Component {
@@ -134,7 +134,7 @@ class WeatherDetail extends React.Component {
             const date = new Date(weather.dt * 1000);
             date.setHours(0, 0, 0, 0);
 
-            if (date !== selectedDate) {
+            if (!isSameDate(date, selectedDate)) {
                 selectedDate = date;
                 weathers.push(weather);
             }

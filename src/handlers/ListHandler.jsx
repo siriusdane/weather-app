@@ -60,11 +60,13 @@ class ListHandler extends React.Component {
     renderErrors() {
         return (
             <div className='loading-main-error'>
-                <i className='fa fa-exclamation-circle' />
-                <span>There was an error loading the weather information</span>
-                <Button bsStyle='link' onClick={ this.getDefaultWeathers }>
-                    Try Again
-                </Button>
+                <div className='error-container'>
+                    <i className='fa fa-exclamation-circle' />
+                    <span>There was an error loading the weather information</span>
+                    <Button bsStyle='link' bsSize='large' onClick={ this.getDefaultWeathers }>
+                        Try Again
+                    </Button>
+                </div>
             </div>
         );
     }
