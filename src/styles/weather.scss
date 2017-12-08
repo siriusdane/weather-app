@@ -1,205 +1,144 @@
-$font-base: 14px;
-$font-big: 22px;
+@import './variables';
 
-$color-main: #48afb8;
-$color-font: #223322;
-$color-bg: #f8f8f8;
-$color-error: #E53935;
-
-@function spacer($amount) {
-    @return ($amount*12px);
-}
-
-body {
-    color: $color-font;
-    background-color: $color-bg;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
+#root, body {
+    width: 100%;
     height: 100%;
-    width: 100%;
-}
-
-#root, .app-container {
-    width: 100%;
     margin: 0;
+    font-family: $font-family;
+    font-size: $font-body;
 }
 
 .navbar {
-    display: flex;
     width: 100%;
+    display: inline-grid;
+    grid-template-columns: [title] 25% 50% [buttons] 25%;
     justify-content: space-between;
-    align-items: center;
-    color: $color-bg;
-    background-color: $color-main;
-    font-size: $font-big;
+    font-size: $font-body;
+    padding: spacer(1) 0 spacer(1) 0;
+    color: $color-font-reverse;
+    background-color: $color-product;
 
     .navbar-title {
-        flex: 1 1 auto;
-        margin-left: spacer(2);
-        cursor: pointer;
+        grid-column: title / auto;
+        padding-left: spacer(1);
+        
+        .selectable { 
+            cursor: pointer;
+
+            .fa { margin-right: spacer(1); }
+        }
     }
 
     .navbar-selector {
-        flex: 1 1 auto;
-        margin-right: spacer(2);
-        text-align: right;
+        grid-column: buttons / auto;
+        padding-right: spacer(1);
+        display: inline-grid;
+        grid-template-columns: [today] 50% [buttons] 50%;
 
-        span {
-            margin-right: spacer(1);
+        .date {
+            grid-column: today / auto;
+        }
+
+        .drpdown-menu {
+            grid-column: buttons / auto;
         }
     }
 }
 
 .weather-min-container {
-    flex: 0 1 auto;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid $color-main;
-    color: $color-bg;
-    width: 250px;
-    padding: spacer(1);
-    margin: spacer(1);
+    width: 200px;
+    height: 200px;
+    border: 2px solid $color-product;
+    border-radius: spacer(1);
+    background-color: $color-product-lightest;
+    color: $color-font;
+    text-align: center;
     cursor: pointer;
-    box-shadow: 3px 3px 5px 6px #ccc;
-    background-color: $color-main;
-
-    .weather-info {
-        display: flex;
-        flex-flow: column;
-        align-items: center;
-        
-        .temp {
-            font-size: $font-big;
-            padding: spacer(1);
-        }
-
-        .weather-icon {
-            height: 75px;
-            width: 75px;
-            padding: spacer(1);
-        }
-    }
-
-    .weather-name {
-        font-size: $font-big;
-    }
+    display: grid;
+    align-items: center;
+    justify-content: center;
 }
 
 .default-cities {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
+    margin: spacer(3);
+    display: grid;
     justify-content: center;
+    grid-gap: spacer(1);
+    grid-template-columns: repeat(auto-fit, 200px);
 }
 
-.weather-custom-container {
-    display: flex;
-    flex-flow: column;
+.weather-search-container {
+    display: grid;
     justify-content: center;
-    align-items: center;
 
-    .form-group {
-        max-width: 250px;
-        margin: spacer(2);
+    .link {
+        color: $color-product;
+        cursor: pointer;
 
-        .input-group-btn {
-            .btn-primary {
-                background-color: $color-main;
-                border-color: $color-main;
-            }
+        &:hover {
+            text-decoration: underline;
         }
-    }
-
-    .weather-min-container {
-        background-color: $color-bg;
-        color: $color-main;
     }
 }
 
 .weather-detail-container {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-colums: spacer(1) auto spacer(1);
+    grid-template-rows: [header] 100px [map] 400px [info] auto;
 
-    .weather-detail-map {
-        flex: 0 1 auto;
-        display: flex;
-        flex-direction: column;
+    .header {
+        display: grid;
         align-items: center;
-        justify-content: center;
-        margin: spacer(1);
-        width: 300px;
-    }
+        grid-row: header / auto;
+        grid-template-columns: [name] auto [weather] auto;
 
-    .weather-detail-info {
-        flex: 0 1 auto;
-        display: flex;
-        flex-direction: column;
-        margin: spacer(1);
+        .name {
+            grid-column: name / auto;
+            padding-left: spacer(2);
+        }
+
+        .weather {
+            grid-column: weather / auto;
+            text-align: right;
+            padding-right: spacer(2);
+
+            span {
+                padding: spacer(1);
+            }
+        }
     }
 
     .city-map {
-        height: 300px;
-        width: 300px;
-        border: 1px solid $color-main;
+        grid-row: map / auto;
+        padding: 0 spacer(2) 0 spacer(2);
     }
 
-    .city-weather {
-        font-size: $font-big;
+    .forecast-container {
+        padding: 0 spacer(2) 0 spacer(2);
 
-        span {
-            padding: spacer(1);
-        }
-    }
+        .city-forecast {
+            display: grid;
+            grid-gap: spacer(1);
+            grid-template-columns: repeat(auto-fit, 200px);
 
-    .city-forecast {
-        display: flex;
-        flex-flow: row wrap;
-        align-items: center;
-        justify-content: flex-start;
+            .forecast {
+                border: 1px solid $color-product;
+                padding: spacer(1);
+                display: grid;
+                text-align: center;
+                justify-content: center;
+                align-items: center;
 
-        .forecast {
-            flex: 0 1 auto;
-            font-size: $font-base;
-            width: 200px;
-            padding: spacer(2);
-            text-align: center;
+                .date {
+                    font-size: $font-size-h4;
+                }
 
-            .date {
-                font-size: $font-big
-            }
+                .info {
+                    font-size: $font-body;
 
-            .info {
-                span {
-                    padding: spacer(1);
+                    span:first-child { margin-right: spacer(1) }
                 }
             }
         }
-    }
-}
-
-.loading-main-error, .loading-main-page, .error-page {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: $font-big;
-    height: 100vh;
-
-    .error-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .fa {
-        font-size: 40px;
-        color: $color-error;
-        margin: spacer(1);
     }
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
 import Navbar from '../components/Navbar.jsx';
 import WeatherDetail from '../components/WeatherDetail.jsx';
 import { weatherGetCityInfo } from '../actions/weather';
@@ -65,9 +64,9 @@ class DetailHandler extends React.Component {
                 <div className='error-container'>
                     <i className='fa fa-exclamation-circle' />
                     <span>There was an error loading the weather information</span>
-                    <Button bsStyle='link' bsSize='large' onClick={ this.getCityInformation }>
+                    <button className='btn btn-big' onClick={ this.getCityInformation }>
                         Try Again
-                    </Button>
+                    </button>
                 </div>
             </div>
         );
@@ -90,7 +89,7 @@ class DetailHandler extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        city: state.weather.selectedCity,
+        city: state.weather.city,
         unit: state.weather.unit
     };
 }

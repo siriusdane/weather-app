@@ -2,20 +2,20 @@ import _ from 'lodash';
 import {
     ADD_WEATHER,
     REMOVE_WEATHER,
-    ADD_CUSTOM,
-    CLEAR_CUSTOM,
     CHANGE_UNIT,
     SELECT_CITY,
     CLEAR_CITY,
-    ADD_FORECAST
+    ADD_FORECAST,
+    ADD_SEARCH,
+    CLEAR_SEARCH
 } from '../actions/weather';
 import { TEMP_CELCIUS } from '../constants/weather';
 
 const initialState = {
     weathers: {},
-    custom: null,
     unit: TEMP_CELCIUS,
-    selectedCity: null
+    city: null,
+    queryId: null
 };
 
 function storeHandler(state = initialState, action) {
@@ -33,16 +33,6 @@ function storeHandler(state = initialState, action) {
                 ...state,
                 weathers: _.pluck(state.weathers, action.cityId)
             };
-        case ADD_CUSTOM:
-            return {
-                ...state,
-                custom: action.city
-            };
-        case CLEAR_CUSTOM:
-            return {
-                ...state,
-                custom: null
-            };
         case CHANGE_UNIT:
             return {
                 ...state,
@@ -51,20 +41,31 @@ function storeHandler(state = initialState, action) {
         case SELECT_CITY:
             return {
                 ...state,
-                selectedCity: action.city
+                city: action.city
             };
         case CLEAR_CITY:
             return {
                 ...state,
-                selectedCity: null
+                city: null
             };
         case ADD_FORECAST:
             return {
                 ...state,
-                selectedCity: {
-                    ...state.selectedCity,
+                city: {
+                    ...state.city,
                     forecast: action.forecast
                 }
+            };
+        case ADD_SEARCH:
+            return {
+                ...state,
+                queryId: action.id
+            };
+        case CLEAR_SEARCH:
+            return {
+                ...state,
+                queryId: null,
+                weathers: _.omit(state.weathers, state.queryId)
             };
         default:
             return { ...state };

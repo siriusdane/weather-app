@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
 import Navbar from '../components/Navbar.jsx';
 import WeatherList from '../components/WeatherList.jsx';
 import { weatherGetMultiple } from '../actions/weather';
@@ -11,7 +10,7 @@ class ListHandler extends React.Component {
     static propTypes = {
         weathers: PropTypes.object.isRequired,
         unit: PropTypes.string.isRequired,
-        custom: PropTypes.object,
+        queryId: PropTypes.number,
         dispatch: PropTypes.func.isRequired
     };
 
@@ -63,9 +62,9 @@ class ListHandler extends React.Component {
                 <div className='error-container'>
                     <i className='fa fa-exclamation-circle' />
                     <span>There was an error loading the weather information</span>
-                    <Button bsStyle='link' bsSize='large' onClick={ this.getDefaultWeathers }>
+                    <button className='btn btn-big' onClick={ this.getDefaultWeathers }>
                         Try Again
-                    </Button>
+                    </button>
                 </div>
             </div>
         );
@@ -83,8 +82,8 @@ class ListHandler extends React.Component {
 function mapStateToProps(state) {
     return {
         weathers: state.weather.weathers,
-        custom: state.weather.custom,
         unit: state.weather.unit,
+        queryId: state.weather.queryId
     };
 }
 

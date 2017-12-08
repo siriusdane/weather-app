@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Button, FormGroup, FormControl, HelpBlock, InputGroup } from 'react-bootstrap';
+import Button from './utilities/Button.jsx';
+import InputGroup from './utilities/InputGroup.jsx';
 import WeatherMin from './WeatherMin.jsx';
-import { weatherSelectCity, weatherGetCity, weatherClearCustom } from '../actions/weather';
+import { weatherSelectCity, weatherGetCity, weatherClearSearch } from '../actions/weather';
+import { CITIES } from '../constants/weather';
 import FieldValidator from '../utils/validation';
 
 class WeatherList extends React.Component {
     static propTypes = {
         weathers: PropTypes.object,
-        custom: PropTypes.object,
         unit: PropTypes.string,
+        queryId: PropTypes.number,
         dispatch: PropTypes.func
     };
 
@@ -28,23 +30,24 @@ class WeatherList extends React.Component {
             <div className='weather-list-container'>
                 { this.renderDefaultCities() }
                 { 
-                    this.props.custom ?
-                        this.renderCustomCity() :
-                        this.renderCustomSelector()
+                    this.props.queryId ?
+                        this.renderSearchedCity() :
+                        this.renderSearchSelector()
                 }
             </div>
         );
     }
 
     renderDefaultCities() {
-        const weathers = _.sortBy(_.values(this.props.weathers), weather => weather.main.temp);
+        const weathers = _.filter(_.values(this.props.weathers), weather => _.includes(CITIES, weather.name)),
+            ordered = _.sortBy(_.values(weathers), weather => weather.main.temp);
 
         return (
             <div className='default-cities'>
                 {
-                    weathers.map(weather => (
+                    ordered.map((weather, idx) => (
                         <WeatherMin
-                            key={ _.uniqueId('weather-min-') }
+                            key={ idx }
                             weather={ weather }
                             unit={ this.props.unit }
                             route={ this.getRoute(weather.id) }
@@ -55,51 +58,45 @@ class WeatherList extends React.Component {
         );
     }
 
-    renderCustomCity() {
+    renderSearchedCity() {
+        const weather = this.props.weathers[this.props.queryId];
+
         return (
-            <div className='weather-custom-container'>
+            <div className='weather-search-container'>
                 <WeatherMin
-                    weather={ this.props.custom }
+                    weather={ weather }
                     unit={ this.props.unit }
-                    route={ this.getRoute(this.props.custom.id) }
+                    route={ this.getRoute(weather.id) }
                 />
-                <Button bsStyle='link' onClick={ this.onNewSearch }>
+                <p className='link' onClick={ this.onNewSearch }>
                     Perform another search
-                </Button>
+                </p>
             </div>
         );
     }
 
-    renderCustomSelector() {
+    renderSearchSelector() {
         return (
-            <div className='weather-custom-container'>
-                <FormGroup controlId='1' validationState={ this.getCustomValidationState() }>
-                    <InputGroup>
-                        <FormControl
-                            type='text'
-                            onChange={ this.onChangeCustom }
-                            value={ this.state.query }
-                            placeholder='Input a city name'
-                        />
-                        <InputGroup.Button>
-                            <Button
-                                bsStyle='primary'
-                                onClick={ this.onClickSearch }
-                                disabled={ Boolean(this.state.queryError) }
-                            >
-                                Search
-                            </Button>
-                        </InputGroup.Button>
-                    </InputGroup>
-                    <HelpBlock>{ this.state.queryError }</HelpBlock>
-                </FormGroup>
+            <div className='weather-search-container'>
+                <div>
+                    <InputGroup
+                        help={ this.state.queryError }
+                        validationState={ this.getSearchValidationState() }
+                        inputProps={{
+                            value: this.state.query,
+                            onChange: this.onSearchChange,
+                            placeholder: 'Input a city name',
+                            onKeyPress: this.onSearchKeyPress
+                        }}
+                    />
+                </div>
             </div>
         );
     }
 
     // SELECTORS
-    getCustomValidationState() {
-        return this.state.queryError ? 'error' : null;
+    getSearchValidationState() {
+        return this.state.queryError ? InputGroup.VALIDATION_ERROR : null;
     }
 
     getRoute(cityId) {
@@ -107,11 +104,19 @@ class WeatherList extends React.Component {
     }
 
     // HANDLERS
-    onChangeCustom = (e) => {
-        this.setState({ query: e.target.value }, this.validateCustomField);
+    onSearchChange = (e) => {
+        this.setState({ query: e.target.value }, this.validateSearchField);
     }
 
-    onClickSearch = () => {
+    onSearchKeyPress = (e) => {
+        if (!e) e = window.event;
+        const keyCode = e.keyCode || e.which;
+        if (keyCode == '13') {
+            this.submitQuery();
+        }
+    }
+
+    submitQuery() {
         this.setState({ loading: true });
         this.props.dispatch(weatherGetCity(this.state.query))
             .then(error => { 
@@ -128,10 +133,10 @@ class WeatherList extends React.Component {
 
     onNewSearch = () => {
         this.setState({ query: '' });
-        this.props.dispatch(weatherClearCustom());
+        this.props.dispatch(weatherClearSearch());
     }
 
-    validateCustomField = () => {
+    validateSearchField = () => {
         const error = new FieldValidator(this.state.query)
             .notEmpty()
             .notNumeric()

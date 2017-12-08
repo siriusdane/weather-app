@@ -1,0 +1,40 @@
+@import './variables';
+
+.btn {
+    border: 1px solid $color-product;
+    padding: spacer(0.5);
+    min-width: 75px;
+    color: $color-font;
+    cursor: pointer;
+
+    &.btn-disabled {
+        cursor: not-allowed;
+        color: #f0f0f0 !important;
+        background-color: $color-product-light !important;
+    }
+
+    &.btn-primary {
+        background-color: $color-product;
+        color: $color-font-reverse;
+    }
+
+    &.btn-success {
+        color: $color-font-reverse;
+        background-color: $color-success;
+    }
+
+    &.btn-error {
+        color: $color-font-reverse;
+        background-color: $color-error;
+    }
+
+    &.btn-large {
+        min-width: 150px;
+        font-size: $font-size-h4;
+    }
+
+    &.btn-small {
+        min-width: 50px;
+        font-size: spacer(1);
+    }
+}

@@ -1,0 +1,32 @@
+// COLORS
+$color-product: #2C9FDD;
+$color-product-light: #56B2E4;
+$color-product-lighter: #EAF5FB;
+$color-product-lightest: #F2F9FD;
+
+$color-font: #4C596B;
+$color-font-reverse: #F8F8F8;
+$color-font-disabled: #CCCCCC;
+$color-label: #8C8C8C;
+
+$color-success: #7CB342;
+$color-bg-success: #E5F0D9;
+$color-info: #1E88E5;
+$color-bg-info: #CBE3FA;
+$color-error: #E53935;
+$color-bg-error: #FAD7D7;
+$color-warning: #FFB330;
+$color-bg-warning: #FFF0D6;
+
+// FONTS
+$font-size-h1: 48px;
+$font-size-h2: 36px;
+$font-size-h3: 28px;
+$font-size-h4: 22px;
+$font-body: 18px;
+$font-family: "Open Sans";
+
+// FUNCTIONS
+@function spacer($amount) {
+    @return ($amount*12px);
+}
