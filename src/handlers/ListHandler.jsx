@@ -10,7 +10,7 @@ class ListHandler extends React.Component {
     static propTypes = {
         weathers: PropTypes.object.isRequired,
         unit: PropTypes.string.isRequired,
-        custom: PropTypes.object,
+        queryId: PropTypes.number,
         dispatch: PropTypes.func.isRequired
     };
 
@@ -82,8 +82,8 @@ class ListHandler extends React.Component {
 function mapStateToProps(state) {
     return {
         weathers: state.weather.weathers,
-        custom: state.weather.custom,
         unit: state.weather.unit,
+        queryId: state.weather.queryId
     };
 }
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import Button from './utilities/Button.jsx';
+import DropdownMenu from './utilities/DropdownMenu.jsx';
 import { TEMP_CELCIUS, TEMP_FAHRENHEIT, TEMP_KELVIN } from '../constants/weather';
 import { weatherChangeUnit, weatherClearCity } from '../actions/weather';
 import { displayDate } from '../utils/units';
@@ -41,27 +42,20 @@ class Navbar extends React.Component {
     }
 
     renderDropdown() {
+        const options = [
+            { copy: 'Celcius', value: TEMP_CELCIUS },
+            { copy: 'Fahrenheit', value: TEMP_FAHRENHEIT },
+            { copy: 'Kelvin', value: TEMP_KELVIN }
+        ];
+
         return (
             <div className='navbar-selector'>
                 <span>{ displayDate(new Date()) }</span>
-                <button className='btn btn-dropdown' onClick={ this.onClickDropdown }>
-                    { this.getButtonCopy() }
-                </button>
-                <div className
-                <DropdownButton id='1' title={ this.getButtonCopy() }>
-                    <MenuItem
-                        eventKey={ TEMP_CELCIUS }
-                        onClick={ () => this.onClick(TEMP_CELCIUS) }
-                    >Celcius</MenuItem>
-                    <MenuItem
-                        eventKey={ TEMP_FAHRENHEIT }
-                        onClick={ () => this.onClick(TEMP_FAHRENHEIT) }
-                    >Fahrenheit</MenuItem>
-                    <MenuItem
-                        eventKey={ TEMP_KELVIN }
-                        onClick={ () => this.onClick(TEMP_KELVIN) }
-                    >Kelvin</MenuItem>
-                </DropdownButton>
+                <DropdownMenu
+                    title={ this.getButtonCopy() }
+                    options={ options }
+                    onSelect={ this.onClick }
+                />
             </div>
         );
     }

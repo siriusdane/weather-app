@@ -3,14 +3,14 @@ import _ from 'lodash';
 
 export const ADD_WEATHER = 'WTR_ADD_WEATHER';
 export const REMOVE_WEATHER = 'WTR_REMOVE_WEATHER';
-export const ADD_CUSTOM = 'WTR_ADD_CUSTOM';
-export const CLEAR_CUSTOM = 'WTR_CLEAR_CUSTOM';
 export const SELECT_CITY = 'WTR_SELECT_CITY';
 export const CLEAR_CITY = 'WTR_CLEAR_CITY';
 export const CHANGE_UNIT = 'WTR_CHANGE_UNIT';
 export const ADD_FORECAST = 'WTR_ADD_FORECAST';
+export const ADD_SEARCH = 'WTR_ADD_SEARCH';
+export const CLEAR_SEARCH = 'WTR_CLEAR_SEARCH';
 
-export function weatherGetCity(name, custom = true) {
+export function weatherGetCity(name, search = true) {
     return dispatch => {
         const params = {
             q: name,
@@ -24,10 +24,9 @@ export function weatherGetCity(name, custom = true) {
                     return json;
                 }
 
-                if (custom) {
-                    dispatch(addCustomWeather(json));
-                } else {
-                    dispatch(addWeather(json));
+                dispatch(addWeather(json));
+                if (search) {
+                    dispatch(addSearch(json.id));
                 }
 
                 return null;
@@ -95,9 +94,9 @@ export function weatherRemoveCity(city) {
     };
 }
 
-export function weatherClearCustom() {
+export function weatherClearSearch() {
     return dispatch => {
-        return dispatch(clearCustomWeather());
+        return dispatch(clearSearch());
     };
 }
 
@@ -127,14 +126,6 @@ function removeWeather(city) {
     return { type: REMOVE_WEATHER, cityId: city.id };
 }
 
-function addCustomWeather(city) {
-    return { type: ADD_CUSTOM, city };
-}
-
-function clearCustomWeather() {
-    return { type: CLEAR_CUSTOM };
-}
-
 function selectCity(city) {
     return { type: SELECT_CITY, city };
 }
@@ -149,6 +140,14 @@ function changeUnit(unit) {
 
 function addWeatherForecast(forecast) {
     return { type: ADD_FORECAST, forecast };
+}
+
+function addSearch(id) {
+    return { type: ADD_SEARCH, id };
+}
+
+function clearSearch() {
+    return { type: CLEAR_SEARCH };
 }
 
 function getQueryParams(params) {

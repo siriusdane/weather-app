@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Button, FormGroup, FormControl, HelpBlock, InputGroup } from 'react-bootstrap';
 import WeatherMin from './WeatherMin.jsx';
-import { weatherSelectCity, weatherGetCity, weatherClearCustom } from '../actions/weather';
+import { weatherSelectCity, weatherGetCity, weatherClearSearch } from '../actions/weather';
+import { CITIES } from '../constants/weather';
 import FieldValidator from '../utils/validation';
 
 class WeatherList extends React.Component {
     static propTypes = {
         weathers: PropTypes.object,
-        custom: PropTypes.object,
         unit: PropTypes.string,
+        queryId: PropTypes.number,
         dispatch: PropTypes.func
     };
 
@@ -28,23 +29,24 @@ class WeatherList extends React.Component {
             <div className='weather-list-container'>
                 { this.renderDefaultCities() }
                 { 
-                    this.props.custom ?
-                        this.renderCustomCity() :
-                        this.renderCustomSelector()
+                    this.props.queryId ?
+                        this.renderSearchedCity() :
+                        this.renderSearchSelector()
                 }
             </div>
         );
     }
 
     renderDefaultCities() {
-        const weathers = _.sortBy(_.values(this.props.weathers), weather => weather.main.temp);
+        const weathers = _.filter(_.values(this.props.weathers), weather => _.includes(CITIES, weather.name)),
+            ordered = _.sortBy(_.values(weathers), weather => weather.main.temp);
 
         return (
             <div className='default-cities'>
                 {
-                    weathers.map(weather => (
+                    ordered.map((weather, idx) => (
                         <WeatherMin
-                            key={ _.uniqueId('weather-min-') }
+                            key={ idx }
                             weather={ weather }
                             unit={ this.props.unit }
                             route={ this.getRoute(weather.id) }
@@ -55,13 +57,15 @@ class WeatherList extends React.Component {
         );
     }
 
-    renderCustomCity() {
+    renderSearchedCity() {
+        const weather = this.props.weathers[this.props.queryId];
+
         return (
-            <div className='weather-custom-container'>
+            <div className='weather-search-container'>
                 <WeatherMin
-                    weather={ this.props.custom }
+                    weather={ weather }
                     unit={ this.props.unit }
-                    route={ this.getRoute(this.props.custom.id) }
+                    route={ this.getRoute(weather.id) }
                 />
                 <Button bsStyle='link' onClick={ this.onNewSearch }>
                     Perform another search
@@ -70,14 +74,14 @@ class WeatherList extends React.Component {
         );
     }
 
-    renderCustomSelector() {
+    renderSearchSelector() {
         return (
-            <div className='weather-custom-container'>
-                <FormGroup controlId='1' validationState={ this.getCustomValidationState() }>
+            <div className='weather-search-container'>
+                <FormGroup controlId='1' validationState={ this.getSearchValidationState() }>
                     <InputGroup>
                         <FormControl
                             type='text'
-                            onChange={ this.onChangeCustom }
+                            onChange={ this.onChangeSearch }
                             value={ this.state.query }
                             placeholder='Input a city name'
                         />
@@ -98,7 +102,7 @@ class WeatherList extends React.Component {
     }
 
     // SELECTORS
-    getCustomValidationState() {
+    getSearchValidationState() {
         return this.state.queryError ? 'error' : null;
     }
 
@@ -107,8 +111,8 @@ class WeatherList extends React.Component {
     }
 
     // HANDLERS
-    onChangeCustom = (e) => {
-        this.setState({ query: e.target.value }, this.validateCustomField);
+    onChangeSearch = (e) => {
+        this.setState({ query: e.target.value }, this.validateSearchField);
     }
 
     onClickSearch = () => {
@@ -128,10 +132,10 @@ class WeatherList extends React.Component {
 
     onNewSearch = () => {
         this.setState({ query: '' });
-        this.props.dispatch(weatherClearCustom());
+        this.props.dispatch(weatherClearSearch());
     }
 
-    validateCustomField = () => {
+    validateSearchField = () => {
         const error = new FieldValidator(this.state.query)
             .notEmpty()
             .notNumeric()

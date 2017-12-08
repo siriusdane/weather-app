@@ -89,7 +89,7 @@ class DetailHandler extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        city: state.weather.selectedCity,
+        city: state.weather.city,
         unit: state.weather.unit
     };
 }
