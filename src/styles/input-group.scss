@@ -1,0 +1,47 @@
+@import './variables';
+
+.input-grp {
+    width: 100%;
+    padding: spacer(1);
+    color: $color-font;
+
+    input {
+        padding: spacer(0.5) spacer(1) spacer(0.5) spacer(1);
+        color: $color-font;
+        font-size: $font-body;
+        border: 1px solid $color-font-disabled;
+        border-radius: spacer(0.5);
+    }
+
+    input::placeholder {
+        color: $color-font-disabled;
+    }
+
+    .input-grp-help {
+        font-size: 12px;
+    }
+
+    &.has-error {
+        color: $color-error !important;
+
+        input {
+            border: 1px solid $color-error !important;
+        }
+    }
+
+    &.has-warning {
+        color: $color-warning !important;
+
+        input {
+            border: 1px solid $color-warning !important;
+        }
+    }
+
+    &.has-success {
+        color: $color-success !important;
+
+        input {
+            border: 1px solid $color-success !important;
+        }
+    }
+}

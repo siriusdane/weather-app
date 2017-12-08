@@ -1,0 +1,26 @@
+@import './variables.scss';
+
+.drpdown-menu {
+    .drpdown-btn {
+        cursor: pointer;
+        border: 1px solid $color-product-light;
+        border-radius: spacer(0.5);
+        text-align: center;
+    }
+
+    .drpdown-options {
+        display: block;
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        padding-top: spacer(1);
+
+        .drpdown-option-row {
+            text-align: center;
+            padding: spacer(1);
+            background-color: $color-font-reverse;
+            color: $color-font;
+            cursor: pointer;
+        }
+    }
+}

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Button, FormGroup, FormControl, HelpBlock, InputGroup } from 'react-bootstrap';
+import Button from './utilities/Button.jsx';
+import InputGroup from './utilities/InputGroup.jsx';
 import WeatherMin from './WeatherMin.jsx';
 import { weatherSelectCity, weatherGetCity, weatherClearSearch } from '../actions/weather';
 import { CITIES } from '../constants/weather';
@@ -67,9 +68,9 @@ class WeatherList extends React.Component {
                     unit={ this.props.unit }
                     route={ this.getRoute(weather.id) }
                 />
-                <Button bsStyle='link' onClick={ this.onNewSearch }>
+                <p className='link' onClick={ this.onNewSearch }>
                     Perform another search
-                </Button>
+                </p>
             </div>
         );
     }
@@ -77,33 +78,25 @@ class WeatherList extends React.Component {
     renderSearchSelector() {
         return (
             <div className='weather-search-container'>
-                <FormGroup controlId='1' validationState={ this.getSearchValidationState() }>
-                    <InputGroup>
-                        <FormControl
-                            type='text'
-                            onChange={ this.onChangeSearch }
-                            value={ this.state.query }
-                            placeholder='Input a city name'
-                        />
-                        <InputGroup.Button>
-                            <Button
-                                bsStyle='primary'
-                                onClick={ this.onClickSearch }
-                                disabled={ Boolean(this.state.queryError) }
-                            >
-                                Search
-                            </Button>
-                        </InputGroup.Button>
-                    </InputGroup>
-                    <HelpBlock>{ this.state.queryError }</HelpBlock>
-                </FormGroup>
+                <div>
+                    <InputGroup
+                        help={ this.state.queryError }
+                        validationState={ this.getSearchValidationState() }
+                        inputProps={{
+                            value: this.state.query,
+                            onChange: this.onSearchChange,
+                            placeholder: 'Input a city name',
+                            onKeyPress: this.onSearchKeyPress
+                        }}
+                    />
+                </div>
             </div>
         );
     }
 
     // SELECTORS
     getSearchValidationState() {
-        return this.state.queryError ? 'error' : null;
+        return this.state.queryError ? InputGroup.VALIDATION_ERROR : null;
     }
 
     getRoute(cityId) {
@@ -111,11 +104,19 @@ class WeatherList extends React.Component {
     }
 
     // HANDLERS
-    onChangeSearch = (e) => {
+    onSearchChange = (e) => {
         this.setState({ query: e.target.value }, this.validateSearchField);
     }
 
-    onClickSearch = () => {
+    onSearchKeyPress = (e) => {
+        if (!e) e = window.event;
+        const keyCode = e.keyCode || e.which;
+        if (keyCode == '13') {
+            this.submitQuery();
+        }
+    }
+
+    submitQuery() {
         this.setState({ loading: true });
         this.props.dispatch(weatherGetCity(this.state.query))
             .then(error => { 

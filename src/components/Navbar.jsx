@@ -35,8 +35,11 @@ class Navbar extends React.Component {
 
     renderTitle() {
         return (
-            <div className='navbar-title' onClick={ this.onTitleClick }>
-                <span>Weather App</span>
+            <div className='navbar-title'>
+                <div className='selectable' onClick={ this.onTitleClick }>
+                    <i className='fa fa-cloud' />
+                    <span>Weather App</span>
+                </div>
             </div>
         );
     }
@@ -50,7 +53,7 @@ class Navbar extends React.Component {
 
         return (
             <div className='navbar-selector'>
-                <span>{ displayDate(new Date()) }</span>
+                <span className='date'>{ displayDate(new Date()) }</span>
                 <DropdownMenu
                     title={ this.getButtonCopy() }
                     options={ options }

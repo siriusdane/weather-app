@@ -27,22 +27,21 @@ class WeatherDetail extends React.Component {
     render() {
         return (
             <div className='weather-detail-container'>
-                <div className='weather-detail-map'>
-                    { this.renderName() }
-                    { this.renderMap() }
-                </div>
-                <div className='weather-detail-info'>
-                    { this.renderCurrentWeather() }
-                    { !this.state.loading && this.renderForecast() }
-                </div>
+                { this.renderHeader() }
+                { this.renderMap() }
+                { !this.state.loading && this.renderForecast() }
             </div>
         );
     }
 
-    renderName() {
+    renderHeader() {
         return (
-            <div className='city-name'>
-                <h1>{ this.props.city.name }</h1>
+            <div className='header'>
+                <h1 className='name'>{ this.props.city.name }</h1>
+                <h2 className='weather'>
+                    <span>{ this.getTempCopy() }</span>
+                    <span>{ this.getWeatherCopy(this.props.city) }</span>
+                </h2>
             </div>
         );
     }
@@ -57,7 +56,7 @@ class WeatherDetail extends React.Component {
                     lon={ lon }
                     googleMapURL={ `${GOOGLE_MAPS_URL}&key=${GOOGLE_MAPS_API_KEY}` }
                     loadingElement={ <div style={{ height: '100%' }} /> }
-                    containerElement={ <div style={{ height: '300px' }} /> }
+                    containerElement={ <div style={{ height: '400px' }} /> }
                     mapElement={ <div style={{ height: '100%' }} /> }
                 />
             </div>

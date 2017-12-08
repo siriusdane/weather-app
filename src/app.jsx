@@ -6,7 +6,7 @@ import configureStore from './store';
 import ErrorHandler from './handlers/ErrorHandler.jsx';
 import ListHandler from './handlers/ListHandler.jsx';
 import DetailHandler from './handlers/DetailHandler.jsx';
-import './styles/weather.scss';
+import './styles/index.scss';
 
 const store = configureStore();
 

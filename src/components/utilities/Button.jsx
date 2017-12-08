@@ -7,6 +7,7 @@ class Button extends React.Component {
         classes: PropTypes.string,
         style: PropTypes.string,
         size: PropTypes.string,
+        disabled: PropTypes.bool,
         onClick: PropTypes.func
     }
 
@@ -15,7 +16,8 @@ class Button extends React.Component {
             <button
                 id={ this.getId() }
                 className={ this.getClasses() }
-                onClick={ this.onClick }
+                onClick={ this.props.onClick }
+                disabled={ this.props.disabled }
             >{ this.props.children }</button>
         );
     }
@@ -27,12 +29,14 @@ class Button extends React.Component {
     getClasses() {
         const style = this.getStyleClass(),
             size = this.getSizeClass(),
-            classes = ['btn', style, size, ...(this.props.classes.split(' '))];
+            custom = this.props.classes || '',
+            disabled = this.props.disabled ? 'btn-disabled' : '',
+            classes = ['btn', style, size, disabled, ...(custom.split(' '))];
 
-        return classes.join(' ');
+        return _.filter(classes, c => c !== '').join(' ');
     }
 
-    getStyleClasses() {
+    getStyleClass() {
         switch(this.props.style) {
             case 'primary':
                 return 'btn-primary';

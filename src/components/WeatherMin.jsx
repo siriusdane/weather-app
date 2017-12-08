@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { getUnitDisplay } from '../utils/units';
 import { WEATHER_BASE_ICON } from '../constants/weather';
@@ -26,8 +25,10 @@ class WeatherMin extends React.Component {
 
         return (
             <div className='weather-min-container' onClick={ this.onClick }>
-                { this.renderInfo() }
-                { this.renderName() }
+                <div>
+                    { this.renderInfo() }
+                    { this.renderName() }
+                </div>
             </div>
         );
     }
@@ -40,8 +41,8 @@ class WeatherMin extends React.Component {
             <div className='weather-info'>
                 <div className='icons'>
                     { 
-                        this.props.weather.weather.slice(0,2).map(weather =>
-                            this.renderWeatherIcon(weather, _.uniqueId('icon-'))
+                        this.props.weather.weather.slice(0,2).map((weather, idx) =>
+                            this.renderWeatherIcon(weather, idx)
                         ) 
                     }
                 </div>

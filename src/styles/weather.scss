@@ -1,13 +1,144 @@
 @import './variables';
 
-@function spacer($amount) {
-    @return ($amount*12px);
-}
-
-#root {
+#root, body {
     width: 100%;
     height: 100%;
     margin: 0;
+    font-family: $font-family;
+    font-size: $font-body;
 }
 
+.navbar {
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: [title] 25% 50% [buttons] 25%;
+    justify-content: space-between;
+    font-size: $font-body;
+    padding: spacer(1) 0 spacer(1) 0;
+    color: $color-font-reverse;
+    background-color: $color-product;
 
+    .navbar-title {
+        grid-column: title / auto;
+        padding-left: spacer(1);
+        
+        .selectable { 
+            cursor: pointer;
+
+            .fa { margin-right: spacer(1); }
+        }
+    }
+
+    .navbar-selector {
+        grid-column: buttons / auto;
+        padding-right: spacer(1);
+        display: inline-grid;
+        grid-template-columns: [today] 50% [buttons] 50%;
+
+        .date {
+            grid-column: today / auto;
+        }
+
+        .drpdown-menu {
+            grid-column: buttons / auto;
+        }
+    }
+}
+
+.weather-min-container {
+    width: 200px;
+    height: 200px;
+    border: 2px solid $color-product;
+    border-radius: spacer(1);
+    background-color: $color-product-lightest;
+    color: $color-font;
+    text-align: center;
+    cursor: pointer;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.default-cities {
+    margin: spacer(3);
+    display: grid;
+    justify-content: center;
+    grid-gap: spacer(1);
+    grid-template-columns: repeat(auto-fit, 200px);
+}
+
+.weather-search-container {
+    display: grid;
+    justify-content: center;
+
+    .link {
+        color: $color-product;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.weather-detail-container {
+    display: grid;
+    grid-template-colums: spacer(1) auto spacer(1);
+    grid-template-rows: [header] 100px [map] 400px [info] auto;
+
+    .header {
+        display: grid;
+        align-items: center;
+        grid-row: header / auto;
+        grid-template-columns: [name] auto [weather] auto;
+
+        .name {
+            grid-column: name / auto;
+            padding-left: spacer(2);
+        }
+
+        .weather {
+            grid-column: weather / auto;
+            text-align: right;
+            padding-right: spacer(2);
+
+            span {
+                padding: spacer(1);
+            }
+        }
+    }
+
+    .city-map {
+        grid-row: map / auto;
+        padding: 0 spacer(2) 0 spacer(2);
+    }
+
+    .forecast-container {
+        padding: 0 spacer(2) 0 spacer(2);
+
+        .city-forecast {
+            display: grid;
+            grid-gap: spacer(1);
+            grid-template-columns: repeat(auto-fit, 200px);
+
+            .forecast {
+                border: 1px solid $color-product;
+                padding: spacer(1);
+                display: grid;
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+
+                .date {
+                    font-size: $font-size-h4;
+                }
+
+                .info {
+                    font-size: $font-body;
+
+                    span:first-child { margin-right: spacer(1) }
+                }
+            }
+        }
+    }
+}
